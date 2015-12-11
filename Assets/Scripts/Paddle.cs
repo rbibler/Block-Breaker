@@ -15,8 +15,8 @@ public class Paddle : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		paddlePos = new Vector3(8f, 1f, 0f);
-		paddleVel = .25f;
+		paddlePos = this.transform.position;
+		setPaddleVel (.1f);
 		inputState = INPUT_KEYBOARD;
 	}
 	
@@ -30,7 +30,6 @@ public class Paddle : MonoBehaviour {
 		case INPUT_KEYBOARD:
 			checkKeyInput();
 			break;
-
 		case INPUT_TOUCH:
 			checkClickInput ();
 			break;
@@ -84,5 +83,9 @@ public class Paddle : MonoBehaviour {
 		paddlePos.x = Mathf.Clamp (x, 0.5f, 15.5f);
 		paddlePos.y = y;
 		this.transform.position = paddlePos;
+	}
+	
+	public void setPaddleVel(float vel) {
+		this.paddleVel = vel;
 	}
 }
