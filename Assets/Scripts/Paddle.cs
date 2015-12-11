@@ -5,14 +5,18 @@ public class Paddle : MonoBehaviour {
 
 	private float screenWidth;
 	private float paddlePosInWorldBlocks;
+	private float paddleVel;
 	private Vector3 paddlePos;
 	const int INPUT_MOUSE = 0x03;
 	const int INPUT_KEYBOARD = 0x04;
+	const int INPUT_TOUCH = 0x05;
 	private int inputState;
+
 
 	// Use this for initialization
 	void Start () {
 		paddlePos = new Vector3(8f, 1f, 0f);
+		paddleVel = .25f;
 		inputState = INPUT_KEYBOARD;
 	}
 	
@@ -26,6 +30,10 @@ public class Paddle : MonoBehaviour {
 		case INPUT_KEYBOARD:
 			checkKeyInput();
 			break;
+
+		case INPUT_TOUCH:
+			checkClickInput ();
+			break;
 		}
 	}
 	
@@ -36,10 +44,40 @@ public class Paddle : MonoBehaviour {
 	
 	private void checkKeyInput() {
 		if(Input.GetKey (KeyCode.LeftArrow)) {
-			updatePaddlePos (paddlePos.x - 0.25f, this.transform.position.y);
+			movePaddleLeft ();
 		} else if(Input.GetKey (KeyCode.RightArrow)) {
-			updatePaddlePos (paddlePos.x + 0.25f, this.transform.position.y);
+			movePaddleRight ();
 		}
+	}
+
+	private void checkTouchInput() {
+		Touch[] touches = Input.touches;
+		foreach(Touch touch in touches) {
+			if(touch.position.x < screenWidth / 2) {
+				movePaddleLeft();
+			} else {
+				movePaddleRight();
+			}
+
+		}
+	}
+
+	private void checkClickInput() {
+		if (Input.GetMouseButton(0)) {
+			if(Input.mousePosition.x < screenWidth / 2) {
+				movePaddleLeft();
+			} else {
+				movePaddleRight();
+			}
+		}
+	}
+
+	private void movePaddleLeft() {
+		updatePaddlePos(paddlePos.x - paddleVel, paddlePos.y);
+	}
+
+	private void movePaddleRight() {
+		updatePaddlePos (paddlePos.x + paddleVel, paddlePos.y);
 	}
 	
 	private void updatePaddlePos(float x, float y) {
