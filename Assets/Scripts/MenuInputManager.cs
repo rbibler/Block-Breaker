@@ -18,20 +18,37 @@ public class MenuInputManager : MonoBehaviour {
 	private Vector3 cursorTransformPos;
 	private float cursorYOffset = 0;
 	private bool menuOption1 = true;
+	private bool fixFontSize = false;
 
 	public MenuOptionManager menuManager;
 
 	void Start () {
-		font.material.mainTexture.filterMode = FilterMode.Point;
+		font = Instantiate (Resources.FindObjectsOfTypeAll (typeof (Font))[0]) as Font;
+		if(font != null) {
+			font.material.mainTexture.filterMode = FilterMode.Point;
+		}
 		levelManager = GameObject.FindObjectOfType<LevelManager> ();
 		menuOption1TransformPos = menuOption1Text.transform.position;
 		menuOption2TransformPos = menuOption2Text.transform.position;
 		cursorTransformPos = cursorText.transform.position;
 	}
-
+	
+	void FixTextSize() {
+		messageText.fontSize = (Screen.height / 2);
+		instructionText.fontSize = (Screen.height / 32);
+		menuOption1Text.fontSize = (Screen.height / 32);
+		menuOption2Text.fontSize = (Screen.height / 32);
+		cursorText.fontSize = (Screen.height / 32);
+		print ("Font Size: " + messageText.fontSize);
+	}
+	
 	void Update () {
 		if (cursorYOffset == 0) {
 			cursorYOffset = (menuOption1Text.rectTransform.rect.height - cursorText.rectTransform.rect.height) / 2;
+		}
+		if(!fixFontSize) {
+			FixTextSize();
+			fixFontSize = true;
 		}
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			if (menuOption1) {

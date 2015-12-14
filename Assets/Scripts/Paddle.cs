@@ -3,21 +3,26 @@ using System.Collections;
 
 public class Paddle : MonoBehaviour {
 
+	public int inputState;
+
 	private float screenWidth;
 	private float paddlePosInWorldBlocks;
 	private float paddleVel;
 	private Vector3 paddlePos;
-	const int INPUT_MOUSE = 0x03;
-	const int INPUT_KEYBOARD = 0x04;
-	const int INPUT_TOUCH = 0x05;
-	private int inputState;
+	private Ball ball;
+	const int INPUT_MOUSE = 0x00;
+	const int INPUT_KEYBOARD = 0x01;
+	const int INPUT_TOUCH = 0x02;
+	const int AUTO_PLAY = 0x03;
+	
 
 
 	// Use this for initialization
 	void Start () {
+		ball = GameObject.FindObjectOfType<Ball>();
 		paddlePos = this.transform.position;
 		setPaddleVel (.1f);
-		inputState = INPUT_KEYBOARD;
+		//inputState = AUTO_PLAY;
 	}
 	
 	// Update is called once per frame
@@ -32,6 +37,9 @@ public class Paddle : MonoBehaviour {
 			break;
 		case INPUT_TOUCH:
 			checkClickInput ();
+			break;
+		case AUTO_PLAY:
+			AutoPlay();
 			break;
 		}
 	}
@@ -69,6 +77,11 @@ public class Paddle : MonoBehaviour {
 				movePaddleRight();
 			}
 		}
+	}
+	
+	private void AutoPlay() {
+		paddlePos.x = Mathf.Clamp(ball.transform.position.x, 0.5f, 15.5f);
+		transform.position = paddlePos;
 	}
 
 	private void movePaddleLeft() {
