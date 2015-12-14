@@ -88,4 +88,8 @@ public class Paddle : MonoBehaviour {
 	public void setPaddleVel(float vel) {
 		this.paddleVel = vel;
 	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		col.gameObject.rigidbody2D.velocity += rigidbody2D.velocity;
+	}
 }

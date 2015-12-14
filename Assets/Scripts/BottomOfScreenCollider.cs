@@ -3,9 +3,13 @@ using System.Collections;
 
 public class BottomOfScreenCollider : MonoBehaviour {
 
-	public LevelManager levelManager;
+	private LevelManager levelManager;
+
+	void Start() {
+		levelManager = GameObject.FindObjectOfType<LevelManager> ();
+	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		levelManager.LoadLevel ("Win Screen");
+		levelManager.Lose ();
 	}
 }

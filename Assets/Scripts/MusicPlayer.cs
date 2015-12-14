@@ -12,5 +12,6 @@ public class MusicPlayer : MonoBehaviour {
 			instance = this;
 			GameObject.DontDestroyOnLoad (gameObject);
 		}
+		this.audio.volume = 0f;
 	}
 }

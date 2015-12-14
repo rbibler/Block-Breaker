@@ -3,12 +3,13 @@ using System.Collections;
 
 public class Ball : MonoBehaviour {
 
-	public Paddle paddle;
+	private Paddle paddle;
 
 	private Vector3 paddleToBallVector;
 	private bool gameStarted;
 
 	void Start () {
+		paddle = GameObject.FindObjectOfType<Paddle> ();
 		paddleToBallVector = this.transform.position - paddle.transform.position;
 	}
 	
@@ -16,11 +17,20 @@ public class Ball : MonoBehaviour {
 	void Update () {
 		if (!gameStarted) {
 			this.transform.position = paddle.transform.position + paddleToBallVector;
-			if(Input.GetMouseButtonDown (0)) {
-				print ("mouse");
-				gameStarted = true;
-				this.rigidbody2D.velocity = new Vector2(2f, 10f);
-			}
+		}
+	}
+
+	public void Launch() {
+		this.rigidbody2D.velocity = new Vector2(2f, 10f);
+		gameStarted = true;
+	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		Vector2 tweak = new Vector2 (Random.Range (0f, 0.2f), 
+		                             Random.Range (0, 0.2f));
+		if (gameStarted) {
+			audio.Play ();
+			this.rigidbody2D.velocity += tweak;
 		}
 	}
 }
